@@ -159,7 +159,7 @@
 <body>
 
     <div class="header">
-        <h1>ðŸŽ“ Engineering Branch Quiz</h1>
+        <h1>🎓 Engineering Branch Quiz</h1>
         <p>Answer 15 questions to discover which engineering branch suits you best!</p>
         <p class="scale-info">
             <strong>1</strong> = Strongly Disagree &nbsp;|&nbsp;
@@ -345,20 +345,20 @@
     </div>
 
     <div class="submit-area">
-        <button class="submit-btn" onclick="calculateResult()">ðŸŽ¯ Show My Results</button>
-        <button class="reset-btn" onclick="resetQuiz()">ðŸ”„ Start Over</button>
+        <button class="submit-btn" onclick="calculateResult()">🎯 Show My Results</button>
+        <button class="reset-btn" onclick="resetQuiz()">🔄 Start Over</button>
     </div>
 
     <div class="result-area" id="resultArea" style="display:none;">
-        <h2>ðŸ“Š Your Results</h2>
+        <h2>📊 Your Results</h2>
         <div class="score-cards" id="scoreCards"></div>
-        <h3>ðŸ“ˆ Suitability Chart</h3>
+        <h3>📈 Suitability Chart</h3>
         <div class="chart-area" id="chartArea"></div>
         <div class="recommendation-box" id="recommendationBox"></div>
     </div>
 
     <div class="footer">
-        Made with â¤ï¸ by <strong style="color:#4a148c;">Sarath S Das</strong>
+        Made with ❤️ by <strong style="color:#4a148c;">Sarath S Das</strong>
     </div>
 
     <script>
@@ -369,7 +369,7 @@
           Mech  = Q5 + Q6 + Q15          max = 15  (Q15 shared)
           ECE   = Q7 + Q8                max = 10
           EEE   = Q9 + Q10 + Q15         max = 15  (Q15 shared)
-          General (Q11+Q12+Q13) split evenly â€” added to all 5 branches
+          General (Q11+Q12+Q13) split evenly — added to all 5 branches
         */
 
         var answers = {
@@ -406,7 +406,7 @@
             /* General score split equally across all 5 branches */
             var gen      = answers.q11 + answers.q12 + answers.q13;
             var genShare = gen / 5;
-            var genMax   = 15 / 5; /* 3 questions Ã— 5 max / 5 branches = 3 per branch */
+            var genMax   = 15 / 5; /* 3 questions × 5 max / 5 branches = 3 per branch */
 
             /* Branch raw scores */
             var cseRaw   = answers.q1  + answers.q2  + answers.q14;
@@ -422,7 +422,7 @@
             var eceMax   = 10;
             var eeeMax   = 15;
 
-            /* Percentage = (raw + general share) / (max + general max per branch) Ã— 100 */
+            /* Percentage = (raw + general share) / (max + general max per branch) × 100 */
             var cseP   = Math.round(((cseRaw   + genShare) / (cseMax   + genMax)) * 100);
             var civilP = Math.round(((civilRaw + genShare) / (civilMax + genMax)) * 100);
             var mechP  = Math.round(((mechRaw  + genShare) / (mechMax  + genMax)) * 100);
@@ -430,11 +430,11 @@
             var eeeP   = Math.round(((eeeRaw   + genShare) / (eeeMax   + genMax)) * 100);
 
             var branches = [
-                { name:"CSE",        fullName:"Computer Science Engineering",         percent:cseP,   color:"linear-gradient(135deg,#1565c0,#42a5f5)", emoji:"ðŸ’»" },
-                { name:"Civil",      fullName:"Civil Engineering",                    percent:civilP, color:"linear-gradient(135deg,#2e7d32,#66bb6a)", emoji:"ðŸ—ï¸" },
-                { name:"Mechanical", fullName:"Mechanical Engineering",               percent:mechP,  color:"linear-gradient(135deg,#bf360c,#ff7043)", emoji:"âš™ï¸" },
-                { name:"ECE",        fullName:"Electronics & Communication Engg.",    percent:eceP,   color:"linear-gradient(135deg,#6a1b9a,#ab47bc)", emoji:"ðŸ“¡" },
-                { name:"EEE",        fullName:"Electrical & Electronics Engineering", percent:eeeP,   color:"linear-gradient(135deg,#f57f17,#ffca28)", emoji:"âš¡" }
+                { name:"CSE",        fullName:"Computer Science Engineering",         percent:cseP,   color:"linear-gradient(135deg,#1565c0,#42a5f5)", emoji:"💻" },
+                { name:"Civil",      fullName:"Civil Engineering",                    percent:civilP, color:"linear-gradient(135deg,#2e7d32,#66bb6a)", emoji:"🏗️" },
+                { name:"Mechanical", fullName:"Mechanical Engineering",               percent:mechP,  color:"linear-gradient(135deg,#bf360c,#ff7043)", emoji:"⚙️" },
+                { name:"ECE",        fullName:"Electronics & Communication Engg.",    percent:eceP,   color:"linear-gradient(135deg,#6a1b9a,#ab47bc)", emoji:"📡" },
+                { name:"EEE",        fullName:"Electrical & Electronics Engineering", percent:eeeP,   color:"linear-gradient(135deg,#f57f17,#ffca28)", emoji:"⚡" }
             ];
 
             document.getElementById("resultArea").style.display = "block";
@@ -482,7 +482,7 @@
             var html = "";
             if (top.length === 1) {
                 var best = top[0];
-                html = '<h3>ðŸ† Recommended Branch: ' + best.emoji + ' ' + best.fullName + '</h3>' +
+                html = '<h3>🏆 Recommended Branch: ' + best.emoji + ' ' + best.fullName + '</h3>' +
                     '<p>Your suitability score is <strong>' + best.percent + '%</strong>. ' + getMessage(best.percent) + '</p>';
                 box.className = "recommendation-box";
             } else {
@@ -491,8 +491,8 @@
                     names += top[i].emoji + " " + top[i].name;
                     if (i < top.length - 1) { names += " & "; }
                 }
-                html = '<h3>ðŸ¤ Multiple Suitable Branches: ' + names + '</h3>' +
-                    '<p>These branches scored within 10% of each other. You have strong interest in multiple areas â€” explore the subjects of each before deciding.</p>';
+                html = '<h3>🤝 Multiple Suitable Branches: ' + names + '</h3>' +
+                    '<p>These branches scored within 10% of each other. You have strong interest in multiple areas — explore the subjects of each before deciding.</p>';
                 box.className = "recommendation-box dual";
             }
             box.innerHTML = html;
@@ -506,8 +506,8 @@
         }
 
         function getMessage(p) {
-            if (p >= 80) return "Excellent match â€” you show strong passion for this field!";
-            if (p >= 60) return "Good fit â€” you have solid interest in this area.";
+            if (p >= 80) return "Excellent match — you show strong passion for this field!";
+            if (p >= 60) return "Good fit — you have solid interest in this area.";
             if (p >= 40) return "Moderate interest. Consider exploring more about this field.";
             return "Your interest is currently low. You may want to explore other options.";
         }
