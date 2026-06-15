@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engineering Branch Quiz</title>
+    <title>Engineering Branch Finder</title>
     <style>
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,7 +16,6 @@
             padding: 20px;
         }
 
-        /* --- HEADER --- */
         .header {
             background: linear-gradient(135deg, #1a237e, #4a148c);
             color: white;
@@ -37,7 +36,6 @@
             font-size: 14px;
         }
 
-        /* --- PROGRESS BAR --- */
         .progress-container {
             background-color: white;
             padding: 16px 20px;
@@ -53,28 +51,16 @@
             border-radius: 10px; transition: width 0.3s;
         }
 
-        /* --- QUIZ CONTAINER --- */
         .quiz-container { max-width: 780px; margin: 0 auto; }
 
-        /* --- SECTION TITLES --- */
-        .section-title {
-            font-size: 17px; font-weight: bold;
-            padding: 13px 20px; border-radius: 10px;
-            margin: 28px 0 12px 0; color: white; letter-spacing: 0.3px;
-        }
-        .cse-color   { background: linear-gradient(90deg, #1565c0, #42a5f5); }
-        .civil-color { background: linear-gradient(90deg, #2e7d32, #66bb6a); }
-        .mech-color  { background: linear-gradient(90deg, #bf360c, #ff7043); }
-        .ece-color   { background: linear-gradient(90deg, #6a1b9a, #ab47bc); }
-        .eee-color   { background: linear-gradient(90deg, #f57f17, #ffca28); color: #333; }
-        .general-color { background: linear-gradient(90deg, #00695c, #26a69a); }
-
-        /* --- QUESTION CARDS --- */
         .question-card {
-            background-color: white; border-radius: 12px;
-            padding: 18px 20px; margin-bottom: 12px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin-bottom: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-            border-left: 4px solid #e0e0e0; transition: border-color 0.2s;
+            border-left: 4px solid #e0e0e0;
+            transition: border-color 0.2s;
         }
         .question-card.answered { border-left-color: #43a047; }
         .question-text { font-size: 15px; margin-bottom: 14px; line-height: 1.5; }
@@ -84,12 +70,12 @@
             padding: 3px 9px; border-radius: 5px; margin-right: 8px;
         }
 
-        /* --- RATING BUTTONS --- */
         .rating-row { display: flex; gap: 8px; flex-wrap: wrap; }
         .rating-btn {
-            width: 46px; height: 46px; border: 2px solid #ddd;
-            border-radius: 10px; background-color: #fafafa;
-            font-size: 16px; font-weight: bold; cursor: pointer;
+            width: 46px; height: 46px;
+            border: 2px solid #ddd; border-radius: 10px;
+            background-color: #fafafa; font-size: 16px;
+            font-weight: bold; cursor: pointer;
             transition: all 0.15s; color: #555;
         }
         .rating-btn:hover {
@@ -103,24 +89,23 @@
             box-shadow: 0 3px 10px rgba(21,101,192,0.35);
         }
 
-        /* --- SUBMIT / RESET --- */
         .submit-area { text-align: center; margin: 32px 0 22px 0; }
         .submit-btn {
             background: linear-gradient(135deg, #1a237e, #4a148c);
             color: white; border: none; padding: 15px 38px;
             font-size: 17px; border-radius: 12px; cursor: pointer;
-            margin-right: 12px; box-shadow: 0 4px 14px rgba(26,35,126,0.3);
+            margin-right: 12px;
+            box-shadow: 0 4px 14px rgba(26,35,126,0.3);
             transition: opacity 0.2s;
         }
         .submit-btn:hover { opacity: 0.88; }
         .reset-btn {
             background-color: #eeeeee; color: #333; border: none;
-            padding: 15px 28px; font-size: 16px; border-radius: 12px;
-            cursor: pointer; transition: background 0.2s;
+            padding: 15px 28px; font-size: 16px;
+            border-radius: 12px; cursor: pointer; transition: background 0.2s;
         }
         .reset-btn:hover { background-color: #bdbdbd; }
 
-        /* --- RESULT AREA --- */
         .result-area {
             max-width: 780px; margin: 0 auto 40px auto;
             background-color: white; border-radius: 16px;
@@ -129,20 +114,18 @@
         .result-area h2 { font-size: 24px; margin-bottom: 22px; color: #1a237e; text-align: center; }
         .result-area h3 { font-size: 17px; margin: 26px 0 14px 0; color: #333; }
 
-        /* --- SCORE CARDS --- */
         .score-cards { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; }
         .score-card {
             flex: 1; min-width: 130px; border-radius: 12px;
             padding: 16px 12px; text-align: center; color: white;
             box-shadow: 0 3px 10px rgba(0,0,0,0.15);
         }
-        .score-card .branch-name  { font-size: 13px; font-weight: bold; margin-bottom: 6px; }
+        .score-card .branch-name    { font-size: 13px; font-weight: bold; margin-bottom: 6px; }
         .score-card .branch-percent { font-size: 28px; font-weight: bold; }
-        .score-card .branch-label { font-size: 11px; margin-top: 4px; opacity: 0.9; }
+        .score-card .branch-label   { font-size: 11px; margin-top: 4px; opacity: 0.9; }
 
-        /* --- BAR CHART --- */
         .chart-area { margin-bottom: 24px; }
-        .chart-row { display: flex; align-items: center; margin-bottom: 12px; gap: 10px; }
+        .chart-row  { display: flex; align-items: center; margin-bottom: 12px; gap: 10px; }
         .chart-label { width: 80px; font-size: 13px; font-weight: bold; text-align: right; flex-shrink: 0; }
         .chart-bar-bg { flex: 1; background-color: #eeeeee; border-radius: 8px; height: 30px; overflow: hidden; }
         .chart-bar-fill {
@@ -153,7 +136,6 @@
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
-        /* --- RECOMMENDATION BOX --- */
         .recommendation-box {
             background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
             border-left: 5px solid #2e7d32; border-radius: 10px;
@@ -167,13 +149,18 @@
         }
         .recommendation-box.dual h3 { color: #e65100; }
 
+        .footer {
+            text-align: center; padding: 24px 0 10px 0;
+            font-size: 14px; color: #888;
+        }
+
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>🎓 Engineering Branch Quiz</h1>
-        <p>Answer 30 questions to discover which engineering branch suits you best!</p>
+        <h1>ðŸŽ“ Engineering Branch Quiz</h1>
+        <p>Answer 15 questions to discover which engineering branch suits you best!</p>
         <p class="scale-info">
             <strong>1</strong> = Strongly Disagree &nbsp;|&nbsp;
             <strong>2</strong> = Disagree &nbsp;|&nbsp;
@@ -184,14 +171,11 @@
     </div>
 
     <div class="progress-container">
-        <div class="progress-label">Progress: <span id="progressText">0 / 30 answered</span></div>
+        <div class="progress-label">Progress: <span id="progressText">0 / 15 answered</span></div>
         <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressBar"></div></div>
     </div>
 
     <div class="quiz-container">
-
-        <!-- ===== CSE ===== -->
-        <div class="section-title cse-color">💻 Computer Science Engineering (CSE)</div>
 
         <div class="question-card" id="card-q1">
             <p class="question-text"><span class="q-num">Q1</span> I enjoy programming and software development.</p>
@@ -215,55 +199,8 @@
             </div>
         </div>
 
-        <div class="question-card" id="card-q14">
-            <p class="question-text"><span class="q-num">Q3</span> I prefer working on computers rather than physical machines.</p>
-            <div class="rating-row" id="group-q14">
-                <button class="rating-btn" onclick="selectRating('q14',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q14',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q14',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q14',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q14',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q16">
-            <p class="question-text"><span class="q-num">Q4</span> I enjoy topics like cybersecurity, networking, or cloud computing.</p>
-            <div class="rating-row" id="group-q16">
-                <button class="rating-btn" onclick="selectRating('q16',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q16',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q16',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q16',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q16',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q17">
-            <p class="question-text"><span class="q-num">Q5</span> I like building apps, websites, or software tools.</p>
-            <div class="rating-row" id="group-q17">
-                <button class="rating-btn" onclick="selectRating('q17',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q17',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q17',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q17',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q17',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q18">
-            <p class="question-text"><span class="q-num">Q6</span> I find it interesting to analyse data and draw insights from it.</p>
-            <div class="rating-row" id="group-q18">
-                <button class="rating-btn" onclick="selectRating('q18',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q18',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q18',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q18',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q18',5,this)">5</button>
-            </div>
-        </div>
-
-        <!-- ===== CIVIL ===== -->
-        <div class="section-title civil-color">🏗️ Civil Engineering</div>
-
         <div class="question-card" id="card-q3">
-            <p class="question-text"><span class="q-num">Q7</span> I like designing buildings, bridges, and infrastructure.</p>
+            <p class="question-text"><span class="q-num">Q3</span> I like designing buildings, bridges, and infrastructure.</p>
             <div class="rating-row" id="group-q3">
                 <button class="rating-btn" onclick="selectRating('q3',1,this)">1</button>
                 <button class="rating-btn" onclick="selectRating('q3',2,this)">2</button>
@@ -274,7 +211,7 @@
         </div>
 
         <div class="question-card" id="card-q4">
-            <p class="question-text"><span class="q-num">Q8</span> I enjoy studying construction materials and surveying.</p>
+            <p class="question-text"><span class="q-num">Q4</span> I enjoy studying construction materials and surveying.</p>
             <div class="rating-row" id="group-q4">
                 <button class="rating-btn" onclick="selectRating('q4',1,this)">1</button>
                 <button class="rating-btn" onclick="selectRating('q4',2,this)">2</button>
@@ -284,55 +221,8 @@
             </div>
         </div>
 
-        <div class="question-card" id="card-q19">
-            <p class="question-text"><span class="q-num">Q9</span> I am interested in urban planning and smart city development.</p>
-            <div class="rating-row" id="group-q19">
-                <button class="rating-btn" onclick="selectRating('q19',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q19',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q19',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q19',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q19',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q20">
-            <p class="question-text"><span class="q-num">Q10</span> I would enjoy working on roads, dams, and water supply systems.</p>
-            <div class="rating-row" id="group-q20">
-                <button class="rating-btn" onclick="selectRating('q20',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q20',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q20',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q20',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q20',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q21">
-            <p class="question-text"><span class="q-num">Q11</span> I find structural analysis and load-bearing systems interesting.</p>
-            <div class="rating-row" id="group-q21">
-                <button class="rating-btn" onclick="selectRating('q21',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q21',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q21',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q21',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q21',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q22">
-            <p class="question-text"><span class="q-num">Q12</span> I am interested in environmental engineering and sustainable construction.</p>
-            <div class="rating-row" id="group-q22">
-                <button class="rating-btn" onclick="selectRating('q22',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q22',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q22',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q22',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q22',5,this)">5</button>
-            </div>
-        </div>
-
-        <!-- ===== MECHANICAL ===== -->
-        <div class="section-title mech-color">⚙️ Mechanical Engineering</div>
-
         <div class="question-card" id="card-q5">
-            <p class="question-text"><span class="q-num">Q13</span> I am interested in machines, automobiles, and manufacturing.</p>
+            <p class="question-text"><span class="q-num">Q5</span> I am interested in machines, automobiles, and manufacturing.</p>
             <div class="rating-row" id="group-q5">
                 <button class="rating-btn" onclick="selectRating('q5',1,this)">1</button>
                 <button class="rating-btn" onclick="selectRating('q5',2,this)">2</button>
@@ -343,13 +233,101 @@
         </div>
 
         <div class="question-card" id="card-q6">
-            <p class="question-text"><span class="q-num">Q14</span> I enjoy working with CAD/CAM and product design.</p>
+            <p class="question-text"><span class="q-num">Q6</span> I enjoy working with CAD/CAM and product design.</p>
             <div class="rating-row" id="group-q6">
                 <button class="rating-btn" onclick="selectRating('q6',1,this)">1</button>
                 <button class="rating-btn" onclick="selectRating('q6',2,this)">2</button>
                 <button class="rating-btn" onclick="selectRating('q6',3,this)">3</button>
                 <button class="rating-btn" onclick="selectRating('q6',4,this)">4</button>
                 <button class="rating-btn" onclick="selectRating('q6',5,this)">5</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-q7">
+            <p class="question-text"><span class="q-num">Q7</span> I am interested in communication systems and electronics.</p>
+            <div class="rating-row" id="group-q7">
+                <button class="rating-btn" onclick="selectRating('q7',1,this)">1</button>
+                <button class="rating-btn" onclick="selectRating('q7',2,this)">2</button>
+                <button class="rating-btn" onclick="selectRating('q7',3,this)">3</button>
+                <button class="rating-btn" onclick="selectRating('q7',4,this)">4</button>
+                <button class="rating-btn" onclick="selectRating('q7',5,this)">5</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-q8">
+            <p class="question-text"><span class="q-num">Q8</span> I enjoy learning about embedded systems and IoT.</p>
+            <div class="rating-row" id="group-q8">
+                <button class="rating-btn" onclick="selectRating('q8',1,this)">1</button>
+                <button class="rating-btn" onclick="selectRating('q8',2,this)">2</button>
+                <button class="rating-btn" onclick="selectRating('q8',3,this)">3</button>
+                <button class="rating-btn" onclick="selectRating('q8',4,this)">4</button>
+                <button class="rating-btn" onclick="selectRating('q8',5,this)">5</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-q9">
+            <p class="question-text"><span class="q-num">Q9</span> I am interested in electrical power generation and distribution.</p>
+            <div class="rating-row" id="group-q9">
+                <button class="rating-btn" onclick="selectRating('q9',1,this)">1</button>
+                <button class="rating-btn" onclick="selectRating('q9',2,this)">2</button>
+                <button class="rating-btn" onclick="selectRating('q9',3,this)">3</button>
+                <button class="rating-btn" onclick="selectRating('q9',4,this)">4</button>
+                <button class="rating-btn" onclick="selectRating('q9',5,this)">5</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-q10">
+            <p class="question-text"><span class="q-num">Q10</span> I enjoy working with motors, transformers, and renewable energy systems.</p>
+            <div class="rating-row" id="group-q10">
+                <button class="rating-btn" onclick="selectRating('q10',1,this)">1</button>
+                <button class="rating-btn" onclick="selectRating('q10',2,this)">2</button>
+                <button class="rating-btn" onclick="selectRating('q10',3,this)">3</button>
+                <button class="rating-btn" onclick="selectRating('q10',4,this)">4</button>
+                <button class="rating-btn" onclick="selectRating('q10',5,this)">5</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-q11">
+            <p class="question-text"><span class="q-num">Q11</span> I enjoy solving mathematical and technical problems.</p>
+            <div class="rating-row" id="group-q11">
+                <button class="rating-btn" onclick="selectRating('q11',1,this)">1</button>
+                <button class="rating-btn" onclick="selectRating('q11',2,this)">2</button>
+                <button class="rating-btn" onclick="selectRating('q11',3,this)">3</button>
+                <button class="rating-btn" onclick="selectRating('q11',4,this)">4</button>
+                <button class="rating-btn" onclick="selectRating('q11',5,this)">5</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-q12">
+            <p class="question-text"><span class="q-num">Q12</span> I like practical laboratory work and experiments.</p>
+            <div class="rating-row" id="group-q12">
+                <button class="rating-btn" onclick="selectRating('q12',1,this)">1</button>
+                <button class="rating-btn" onclick="selectRating('q12',2,this)">2</button>
+                <button class="rating-btn" onclick="selectRating('q12',3,this)">3</button>
+                <button class="rating-btn" onclick="selectRating('q12',4,this)">4</button>
+                <button class="rating-btn" onclick="selectRating('q12',5,this)">5</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-q13">
+            <p class="question-text"><span class="q-num">Q13</span> I enjoy creating innovative solutions to real-world problems.</p>
+            <div class="rating-row" id="group-q13">
+                <button class="rating-btn" onclick="selectRating('q13',1,this)">1</button>
+                <button class="rating-btn" onclick="selectRating('q13',2,this)">2</button>
+                <button class="rating-btn" onclick="selectRating('q13',3,this)">3</button>
+                <button class="rating-btn" onclick="selectRating('q13',4,this)">4</button>
+                <button class="rating-btn" onclick="selectRating('q13',5,this)">5</button>
+            </div>
+        </div>
+
+        <div class="question-card" id="card-q14">
+            <p class="question-text"><span class="q-num">Q14</span> I prefer working on computers rather than physical machines.</p>
+            <div class="rating-row" id="group-q14">
+                <button class="rating-btn" onclick="selectRating('q14',1,this)">1</button>
+                <button class="rating-btn" onclick="selectRating('q14',2,this)">2</button>
+                <button class="rating-btn" onclick="selectRating('q14',3,this)">3</button>
+                <button class="rating-btn" onclick="selectRating('q14',4,this)">4</button>
+                <button class="rating-btn" onclick="selectRating('q14',5,this)">5</button>
             </div>
         </div>
 
@@ -364,256 +342,49 @@
             </div>
         </div>
 
-        <div class="question-card" id="card-q23">
-            <p class="question-text"><span class="q-num">Q16</span> I find thermodynamics, fluid mechanics, and heat transfer interesting.</p>
-            <div class="rating-row" id="group-q23">
-                <button class="rating-btn" onclick="selectRating('q23',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q23',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q23',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q23',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q23',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q24">
-            <p class="question-text"><span class="q-num">Q17</span> I am interested in robotics, automation, and industrial systems.</p>
-            <div class="rating-row" id="group-q24">
-                <button class="rating-btn" onclick="selectRating('q24',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q24',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q24',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q24',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q24',5,this)">5</button>
-            </div>
-        </div>
-
-        <!-- ===== ECE ===== -->
-        <div class="section-title ece-color">📡 Electronics &amp; Communication Engineering (ECE)</div>
-
-        <div class="question-card" id="card-q7">
-            <p class="question-text"><span class="q-num">Q18</span> I am interested in communication systems and electronics.</p>
-            <div class="rating-row" id="group-q7">
-                <button class="rating-btn" onclick="selectRating('q7',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q7',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q7',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q7',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q7',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q8">
-            <p class="question-text"><span class="q-num">Q19</span> I enjoy learning about embedded systems and IoT.</p>
-            <div class="rating-row" id="group-q8">
-                <button class="rating-btn" onclick="selectRating('q8',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q8',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q8',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q8',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q8',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q25">
-            <p class="question-text"><span class="q-num">Q20</span> I find signal processing, wireless technologies, and antennas interesting.</p>
-            <div class="rating-row" id="group-q25">
-                <button class="rating-btn" onclick="selectRating('q25',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q25',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q25',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q25',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q25',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q26">
-            <p class="question-text"><span class="q-num">Q21</span> I enjoy designing and building electronic circuits on breadboards or PCBs.</p>
-            <div class="rating-row" id="group-q26">
-                <button class="rating-btn" onclick="selectRating('q26',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q26',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q26',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q26',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q26',5,this)">5</button>
-            </div>
-        </div>
-
-        <!-- ===== EEE ===== -->
-        <div class="section-title eee-color">⚡ Electrical &amp; Electronics Engineering (EEE)</div>
-
-        <div class="question-card" id="card-q9">
-            <p class="question-text"><span class="q-num">Q22</span> I am interested in electrical power generation and distribution.</p>
-            <div class="rating-row" id="group-q9">
-                <button class="rating-btn" onclick="selectRating('q9',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q9',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q9',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q9',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q9',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q10">
-            <p class="question-text"><span class="q-num">Q23</span> I enjoy working with motors, transformers, and renewable energy systems.</p>
-            <div class="rating-row" id="group-q10">
-                <button class="rating-btn" onclick="selectRating('q10',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q10',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q10',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q10',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q10',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q27">
-            <p class="question-text"><span class="q-num">Q24</span> I find smart grids, power electronics, and high-voltage systems interesting.</p>
-            <div class="rating-row" id="group-q27">
-                <button class="rating-btn" onclick="selectRating('q27',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q27',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q27',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q27',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q27',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q28">
-            <p class="question-text"><span class="q-num">Q25</span> I enjoy troubleshooting electrical faults and wiring systems.</p>
-            <div class="rating-row" id="group-q28">
-                <button class="rating-btn" onclick="selectRating('q28',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q28',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q28',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q28',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q28',5,this)">5</button>
-            </div>
-        </div>
-
-        <!-- ===== GENERAL ===== -->
-        <div class="section-title general-color">🔬 General Aptitude</div>
-
-        <div class="question-card" id="card-q11">
-            <p class="question-text"><span class="q-num">Q26</span> I enjoy solving mathematical and technical problems.</p>
-            <div class="rating-row" id="group-q11">
-                <button class="rating-btn" onclick="selectRating('q11',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q11',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q11',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q11',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q11',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q12">
-            <p class="question-text"><span class="q-num">Q27</span> I like practical laboratory work and experiments.</p>
-            <div class="rating-row" id="group-q12">
-                <button class="rating-btn" onclick="selectRating('q12',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q12',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q12',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q12',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q12',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q13">
-            <p class="question-text"><span class="q-num">Q28</span> I enjoy creating innovative solutions to real-world problems.</p>
-            <div class="rating-row" id="group-q13">
-                <button class="rating-btn" onclick="selectRating('q13',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q13',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q13',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q13',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q13',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q29">
-            <p class="question-text"><span class="q-num">Q29</span> I prefer teamwork and collaborative project environments.</p>
-            <div class="rating-row" id="group-q29">
-                <button class="rating-btn" onclick="selectRating('q29',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q29',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q29',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q29',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q29',5,this)">5</button>
-            </div>
-        </div>
-
-        <div class="question-card" id="card-q30">
-            <p class="question-text"><span class="q-num">Q30</span> I am motivated by building things that have a visible impact on society.</p>
-            <div class="rating-row" id="group-q30">
-                <button class="rating-btn" onclick="selectRating('q30',1,this)">1</button>
-                <button class="rating-btn" onclick="selectRating('q30',2,this)">2</button>
-                <button class="rating-btn" onclick="selectRating('q30',3,this)">3</button>
-                <button class="rating-btn" onclick="selectRating('q30',4,this)">4</button>
-                <button class="rating-btn" onclick="selectRating('q30',5,this)">5</button>
-            </div>
-        </div>
-
-    </div><!-- end quiz-container -->
+    </div>
 
     <div class="submit-area">
-        <button class="submit-btn" onclick="calculateResult()">🎯 Show My Results</button>
-        <button class="reset-btn" onclick="resetQuiz()">🔄 Start Over</button>
+        <button class="submit-btn" onclick="calculateResult()">ðŸŽ¯ Show My Results</button>
+        <button class="reset-btn" onclick="resetQuiz()">ðŸ”„ Start Over</button>
     </div>
 
     <div class="result-area" id="resultArea" style="display:none;">
-        <h2>📊 Your Results</h2>
+        <h2>ðŸ“Š Your Results</h2>
         <div class="score-cards" id="scoreCards"></div>
-        <h3>📈 Suitability Chart</h3>
+        <h3>ðŸ“ˆ Suitability Chart</h3>
         <div class="chart-area" id="chartArea"></div>
         <div class="recommendation-box" id="recommendationBox"></div>
-
-        <div class="recommendation-box" id="recommendationBox"></div>
-
     </div>
 
-    <!-- FOOTER -->
-    <div style="text-align:center; padding: 24px 0 10px 0; font-size: 14px; color: #888;">
-        Made with ❤️ by <strong style="color:#4a148c;">Sarath S Das</strong>
+    <div class="footer">
+        Made with â¤ï¸ by <strong style="color:#4a148c;">Sarath S Das</strong>
     </div>
 
     <script>
         /*
-          QUESTION → BRANCH MAPPING
-          ─────────────────────────────────────────────────────────────────────
-          CSE   : q1, q2, q14, q16, q17, q18          (6 questions, max = 30)
-          Civil : q3, q4, q19, q20, q21, q22           (6 questions, max = 30)
-          Mech  : q5, q6, q15, q23, q24               (5 questions, max = 25)
-                  + shared q15 counted once for Mech only
-          ECE   : q7, q8, q25, q26                    (4 questions, max = 20)
-          EEE   : q9, q10, q27, q28                   (4 questions, max = 20)
-                  + shared q15 added to EEE too
-          General (q11, q12, q13, q29, q30) added proportionally to all 5.
-
-          To keep percentages fair, each branch score is divided by its own
-          possible maximum before converting to %.
+          SCORING (as defined):
+          CSE   = Q1 + Q2 + Q14          max = 15
+          Civil = Q3 + Q4 + Q15          max = 15  (Q15 shared: physical systems)
+          Mech  = Q5 + Q6 + Q15          max = 15  (Q15 shared)
+          ECE   = Q7 + Q8                max = 10
+          EEE   = Q9 + Q10 + Q15         max = 15  (Q15 shared)
+          General (Q11+Q12+Q13) split evenly â€” added to all 5 branches
         */
 
         var answers = {
-            q1:0,  q2:0,  q3:0,  q4:0,  q5:0,  q6:0,
-            q7:0,  q8:0,  q9:0,  q10:0, q11:0, q12:0,
-            q13:0, q14:0, q15:0, q16:0, q17:0, q18:0,
-            q19:0, q20:0, q21:0, q22:0, q23:0, q24:0,
-            q25:0, q26:0, q27:0, q28:0, q29:0, q30:0
+            q1:0, q2:0, q3:0, q4:0, q5:0,
+            q6:0, q7:0, q8:0, q9:0, q10:0,
+            q11:0, q12:0, q13:0, q14:0, q15:0
         };
         var answeredCount  = 0;
-        var totalQuestions = 30;
-
-        /* All question IDs in order — used for reset */
-        var allQIDs = [
-            'q1','q2','q14','q16','q17','q18',
-            'q3','q4','q19','q20','q21','q22',
-            'q5','q6','q15','q23','q24',
-            'q7','q8','q25','q26',
-            'q9','q10','q27','q28',
-            'q11','q12','q13','q29','q30'
-        ];
-
-        /* Card IDs match the html card- prefix */
-        var allCardIDs = [
-            'q1','q2','q14','q16','q17','q18',
-            'q3','q4','q19','q20','q21','q22',
-            'q5','q6','q15','q23','q24',
-            'q7','q8','q25','q26',
-            'q9','q10','q27','q28',
-            'q11','q12','q13','q29','q30'
-        ];
+        var totalQuestions = 15;
 
         function selectRating(qid, value, clickedBtn) {
             var wasAnswered = answers[qid] !== 0;
             answers[qid] = value;
-            var groupDiv = document.getElementById("group-" + qid);
-            var allBtns  = groupDiv.querySelectorAll(".rating-btn");
-            for (var i = 0; i < allBtns.length; i++) { allBtns[i].classList.remove("selected"); }
+            var btns = document.getElementById("group-" + qid).querySelectorAll(".rating-btn");
+            for (var i = 0; i < btns.length; i++) { btns[i].classList.remove("selected"); }
             clickedBtn.classList.add("selected");
             document.getElementById("card-" + qid).classList.add("answered");
             if (!wasAnswered) { answeredCount++; }
@@ -628,45 +399,42 @@
 
         function calculateResult() {
             if (answeredCount < totalQuestions) {
-                alert("Please answer all 30 questions first!\nYou still have " + (totalQuestions - answeredCount) + " unanswered.");
+                alert("Please answer all 15 questions first!\nYou still have " + (totalQuestions - answeredCount) + " unanswered.");
                 return;
             }
 
-            /* General aptitude bonus — split evenly across all 5 branches */
-            var genRaw = answers.q11 + answers.q12 + answers.q13 + answers.q29 + answers.q30;
-            var genShare = genRaw / 5;   /* each branch gets 1/5 of the general score */
+            /* General score split equally across all 5 branches */
+            var gen      = answers.q11 + answers.q12 + answers.q13;
+            var genShare = gen / 5;
+            var genMax   = 15 / 5; /* 3 questions Ã— 5 max / 5 branches = 3 per branch */
 
-            /* Branch-specific raw scores */
-            var cseRaw   = answers.q1  + answers.q2  + answers.q14 + answers.q16 + answers.q17 + answers.q18;
-            var civilRaw = answers.q3  + answers.q4  + answers.q19 + answers.q20 + answers.q21 + answers.q22;
-            var mechRaw  = answers.q5  + answers.q6  + answers.q15 + answers.q23 + answers.q24;
-            var eceRaw   = answers.q7  + answers.q8  + answers.q25 + answers.q26;
-            var eeeRaw   = answers.q9  + answers.q10 + answers.q15 + answers.q27 + answers.q28;
-            /* Note: q15 (physical systems) is shared by Mech and EEE as per the original scheme */
+            /* Branch raw scores */
+            var cseRaw   = answers.q1  + answers.q2  + answers.q14;
+            var civilRaw = answers.q3  + answers.q4  + answers.q15;
+            var mechRaw  = answers.q5  + answers.q6  + answers.q15;
+            var eceRaw   = answers.q7  + answers.q8;
+            var eeeRaw   = answers.q9  + answers.q10 + answers.q15;
 
-            /* Max possible for each branch-specific section */
-            var cseMax   = 30;  /* 6 × 5 */
-            var civilMax = 30;  /* 6 × 5 */
-            var mechMax  = 25;  /* 5 × 5 */
-            var eceMax   = 20;  /* 4 × 5 */
-            var eeeMax   = 25;  /* 5 × 5 (q15 shared) */
+            /* Max per branch (branch-specific questions only) */
+            var cseMax   = 15;
+            var civilMax = 15;
+            var mechMax  = 15;
+            var eceMax   = 10;
+            var eeeMax   = 15;
 
-            /* General bonus max per branch = 5 questions × 5 / 5 branches = 5 */
-            var genMax = 5;
-
-            /* Final percentage = (branch raw + general share) / (branch max + general max per branch) × 100 */
-            var csePercent   = Math.round(((cseRaw   + genShare) / (cseMax   + genMax)) * 100);
-            var civilPercent = Math.round(((civilRaw + genShare) / (civilMax + genMax)) * 100);
-            var mechPercent  = Math.round(((mechRaw  + genShare) / (mechMax  + genMax)) * 100);
-            var ecePercent   = Math.round(((eceRaw   + genShare) / (eceMax   + genMax)) * 100);
-            var eeePercent   = Math.round(((eeeRaw   + genShare) / (eeeMax   + genMax)) * 100);
+            /* Percentage = (raw + general share) / (max + general max per branch) Ã— 100 */
+            var cseP   = Math.round(((cseRaw   + genShare) / (cseMax   + genMax)) * 100);
+            var civilP = Math.round(((civilRaw + genShare) / (civilMax + genMax)) * 100);
+            var mechP  = Math.round(((mechRaw  + genShare) / (mechMax  + genMax)) * 100);
+            var eceP   = Math.round(((eceRaw   + genShare) / (eceMax   + genMax)) * 100);
+            var eeeP   = Math.round(((eeeRaw   + genShare) / (eeeMax   + genMax)) * 100);
 
             var branches = [
-                { name:"CSE",        fullName:"Computer Science Engineering",         percent:csePercent,   color:"linear-gradient(135deg,#1565c0,#42a5f5)", emoji:"💻" },
-                { name:"Civil",      fullName:"Civil Engineering",                    percent:civilPercent, color:"linear-gradient(135deg,#2e7d32,#66bb6a)", emoji:"🏗️" },
-                { name:"Mechanical", fullName:"Mechanical Engineering",               percent:mechPercent,  color:"linear-gradient(135deg,#bf360c,#ff7043)", emoji:"⚙️" },
-                { name:"ECE",        fullName:"Electronics & Communication Engg.",    percent:ecePercent,   color:"linear-gradient(135deg,#6a1b9a,#ab47bc)", emoji:"📡" },
-                { name:"EEE",        fullName:"Electrical & Electronics Engineering", percent:eeePercent,   color:"linear-gradient(135deg,#f57f17,#ffca28)", emoji:"⚡" }
+                { name:"CSE",        fullName:"Computer Science Engineering",         percent:cseP,   color:"linear-gradient(135deg,#1565c0,#42a5f5)", emoji:"ðŸ’»" },
+                { name:"Civil",      fullName:"Civil Engineering",                    percent:civilP, color:"linear-gradient(135deg,#2e7d32,#66bb6a)", emoji:"ðŸ—ï¸" },
+                { name:"Mechanical", fullName:"Mechanical Engineering",               percent:mechP,  color:"linear-gradient(135deg,#bf360c,#ff7043)", emoji:"âš™ï¸" },
+                { name:"ECE",        fullName:"Electronics & Communication Engg.",    percent:eceP,   color:"linear-gradient(135deg,#6a1b9a,#ab47bc)", emoji:"ðŸ“¡" },
+                { name:"EEE",        fullName:"Electrical & Electronics Engineering", percent:eeeP,   color:"linear-gradient(135deg,#f57f17,#ffca28)", emoji:"âš¡" }
             ];
 
             document.getElementById("resultArea").style.display = "block";
@@ -683,7 +451,7 @@
                 html += '<div class="score-card" style="background:' + b.color + '">' +
                     '<div class="branch-name">' + b.emoji + ' ' + b.name + '</div>' +
                     '<div class="branch-percent">' + b.percent + '%</div>' +
-                    '<div class="branch-label">' + getSuitabilityLabel(b.percent) + '</div>' +
+                    '<div class="branch-label">' + getLabel(b.percent) + '</div>' +
                     '</div>';
             }
             document.getElementById("scoreCards").innerHTML = html;
@@ -714,8 +482,8 @@
             var html = "";
             if (top.length === 1) {
                 var best = top[0];
-                html = '<h3>🏆 Recommended Branch: ' + best.emoji + ' ' + best.fullName + '</h3>' +
-                    '<p>Your suitability score is <strong>' + best.percent + '%</strong>. ' + getSuitabilityMessage(best.percent) + '</p>';
+                html = '<h3>ðŸ† Recommended Branch: ' + best.emoji + ' ' + best.fullName + '</h3>' +
+                    '<p>Your suitability score is <strong>' + best.percent + '%</strong>. ' + getMessage(best.percent) + '</p>';
                 box.className = "recommendation-box";
             } else {
                 var names = "";
@@ -723,36 +491,35 @@
                     names += top[i].emoji + " " + top[i].name;
                     if (i < top.length - 1) { names += " & "; }
                 }
-                html = '<h3>🤝 Multiple Suitable Branches: ' + names + '</h3>' +
-                    '<p>These branches scored within 10% of each other. You have strong interest in multiple areas — explore the subjects of each before deciding.</p>';
+                html = '<h3>ðŸ¤ Multiple Suitable Branches: ' + names + '</h3>' +
+                    '<p>These branches scored within 10% of each other. You have strong interest in multiple areas â€” explore the subjects of each before deciding.</p>';
                 box.className = "recommendation-box dual";
             }
             box.innerHTML = html;
         }
 
-        function getSuitabilityLabel(p) {
+        function getLabel(p) {
             if (p >= 80) return "Strong Interest";
             if (p >= 60) return "Good Fit";
             if (p >= 40) return "Moderate Interest";
             return "Low Interest";
         }
 
-        function getSuitabilityMessage(p) {
-            if (p >= 80) return "Excellent match — you show strong passion for this field!";
-            if (p >= 60) return "Good fit — you have solid interest in this area.";
+        function getMessage(p) {
+            if (p >= 80) return "Excellent match â€” you show strong passion for this field!";
+            if (p >= 60) return "Good fit â€” you have solid interest in this area.";
             if (p >= 40) return "Moderate interest. Consider exploring more about this field.";
             return "Your interest is currently low. You may want to explore other options.";
         }
-
 
         function resetQuiz() {
             for (var k in answers) { answers[k] = 0; }
             answeredCount = 0;
             updateProgressBar();
-            var allBtns = document.querySelectorAll(".rating-btn");
-            for (var i = 0; i < allBtns.length; i++) { allBtns[i].classList.remove("selected"); }
-            var allCards = document.querySelectorAll(".question-card");
-            for (var i = 0; i < allCards.length; i++) { allCards[i].classList.remove("answered"); }
+            var btns = document.querySelectorAll(".rating-btn");
+            for (var i = 0; i < btns.length; i++) { btns[i].classList.remove("selected"); }
+            var cards = document.querySelectorAll(".question-card");
+            for (var i = 0; i < cards.length; i++) { cards[i].classList.remove("answered"); }
             document.getElementById("resultArea").style.display = "none";
             window.scrollTo({ top:0, behavior:"smooth" });
         }
