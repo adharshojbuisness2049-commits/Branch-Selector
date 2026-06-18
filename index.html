@@ -154,6 +154,35 @@
             font-size: 14px; color: #888;
         }
 
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.55);
+            display: none; align-items: center; justify-content: center;
+            padding: 20px; z-index: 999;
+        }
+        .modal-box {
+            background-color: white; border-radius: 16px;
+            padding: 28px 26px; max-width: 380px; width: 100%;
+            box-shadow: 0 10px 36px rgba(0,0,0,0.3);
+        }
+        .modal-box h2 { font-size: 20px; color: #1a237e; margin-bottom: 8px; }
+        .modal-box p  { font-size: 14px; color: #555; margin-bottom: 18px; line-height: 1.5; }
+        .modal-label { font-size: 13px; font-weight: bold; color: #444; margin-bottom: 6px; display: block; }
+        .modal-input {
+            width: 100%; padding: 12px 14px; font-size: 15px;
+            border: 2px solid #ddd; border-radius: 10px;
+            margin-bottom: 16px; font-family: Arial, sans-serif;
+        }
+        .modal-input:focus { outline: none; border-color: #1565c0; }
+        .modal-error { color: #c62828; font-size: 13px; margin: -10px 0 14px 0; min-height: 16px; }
+        .modal-submit-btn {
+            background: linear-gradient(135deg, #1a237e, #4a148c);
+            color: white; border: none; padding: 14px 0;
+            font-size: 16px; border-radius: 12px; cursor: pointer;
+            width: 100%; box-shadow: 0 4px 14px rgba(26,35,126,0.3);
+        }
+        .modal-submit-btn:hover { opacity: 0.88; }
+
     </style>
 </head>
 <body>
@@ -361,6 +390,23 @@
         Made with ❤️ by <strong style="color:#4a148c;">Sarath S Das</strong>
     </div>
 
+    <div class="modal-overlay" id="contactModalOverlay">
+        <div class="modal-box">
+            <h2>📩 One last step!</h2>
+            <p>Enter your details to unlock your personalized results.</p>
+
+            <label class="modal-label">Your Name</label>
+            <input type="text" id="contactName" class="modal-input" placeholder="e.g. Priya Sharma">
+
+            <label class="modal-label">Phone Number</label>
+            <input type="tel" id="contactPhone" class="modal-input" placeholder="e.g. 9876543210">
+
+            <div class="modal-error" id="contactError"></div>
+
+            <button class="modal-submit-btn" onclick="submitContactInfo()">🎯 View My Results</button>
+        </div>
+    </div>
+
     <script>
         /*
           SCORING (as defined):
@@ -379,6 +425,9 @@
         };
         var answeredCount  = 0;
         var totalQuestions = 15;
+        var contactName  = "";
+        var contactPhone = "";
+        var FORMSPREE_ENDPOINT = "https://formspree.io/f/mykaqjpa";
 
         function selectRating(qid, value, clickedBtn) {
             var wasAnswered = answers[qid] !== 0;
@@ -402,6 +451,33 @@
                 alert("Please answer all 15 questions first!\nYou still have " + (totalQuestions - answeredCount) + " unanswered.");
                 return;
             }
+            document.getElementById("contactError").textContent = "";
+            document.getElementById("contactModalOverlay").style.display = "flex";
+        }
+
+        function submitContactInfo() {
+            var name  = document.getElementById("contactName").value.trim();
+            var phone = document.getElementById("contactPhone").value.trim();
+            var errorEl = document.getElementById("contactError");
+            var phoneDigits = phone.replace(/\D/g, "");
+
+            if (name === "") {
+                errorEl.textContent = "Please enter your name.";
+                return;
+            }
+            if (phoneDigits.length < 7) {
+                errorEl.textContent = "Please enter a valid phone number.";
+                return;
+            }
+
+            errorEl.textContent = "";
+            contactName  = name;
+            contactPhone = phone;
+            document.getElementById("contactModalOverlay").style.display = "none";
+            showResults();
+        }
+
+        function showResults() {
 
             /* General score split equally across all 5 branches */
             var gen      = answers.q11 + answers.q12 + answers.q13;
@@ -442,6 +518,37 @@
             showScoreCards(branches);
             showBarChart(branches);
             showRecommendation(branches);
+            sendResultsEmail(branches);
+        }
+
+        function sendResultsEmail(branches) {
+            var scoreSummary = branches.map(function (b) {
+                return b.name + " (" + b.fullName + "): " + b.percent + "%";
+            }).join("\n");
+
+            var payload = {
+                name: contactName,
+                phone: contactPhone,
+                scores: scoreSummary,
+                _subject: "Engineering Quiz Result — " + contactName
+            };
+
+            fetch(FORMSPREE_ENDPOINT, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
+                },
+                body: JSON.stringify(payload)
+            }).then(function (response) {
+                if (!response.ok) {
+                    return response.json().then(function (data) {
+                        console.error("Formspree rejected submission:", data);
+                    });
+                }
+            }).catch(function (err) {
+                console.error("Formspree submission failed:", err);
+            });
         }
 
         function showScoreCards(branches) {
@@ -515,6 +622,11 @@
         function resetQuiz() {
             for (var k in answers) { answers[k] = 0; }
             answeredCount = 0;
+            contactName = "";
+            contactPhone = "";
+            document.getElementById("contactName").value = "";
+            document.getElementById("contactPhone").value = "";
+            document.getElementById("contactModalOverlay").style.display = "none";
             updateProgressBar();
             var btns = document.querySelectorAll(".rating-btn");
             for (var i = 0; i < btns.length; i++) { btns[i].classList.remove("selected"); }
