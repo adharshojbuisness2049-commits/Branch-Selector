@@ -183,6 +183,13 @@
         }
         .modal-submit-btn:hover { opacity: 0.88; }
 
+        .modal-optional-toggle {
+            color: #1565c0; font-size: 14px; font-weight: bold;
+            cursor: pointer; margin: -4px 0 16px 0; text-align: center;
+            padding: 8px; border: 1px dashed #1565c0; border-radius: 8px;
+        }
+        .modal-optional-toggle:hover { background-color: #f0f6ff; }
+
     </style>
 </head>
 <body>
@@ -401,23 +408,32 @@
             <label class="modal-label">Phone Number</label>
             <input type="tel" id="contactPhone" class="modal-input" placeholder="e.g. 9876543210">
 
+            <label class="modal-label">12th Total Percentage</label>
+            <input type="number" id="contactTwelfth" class="modal-input" placeholder="e.g. 85" min="0" max="100" step="0.01">
+
             <label class="modal-label">Board / Syllabus</label>
             <select id="contactBoard" class="modal-input">
                 <option value="">Select your board</option>
                 <option value="CBSE">CBSE</option>
                 <option value="State Syllabus">State Syllabus</option>
-                <option value="ICSE">ICSE</option>
+                <option value="NIOS">NIOS</option>
                 <option value="Other">Other</option>
             </select>
 
-            <label class="modal-label">12th Total Percentage</label>
-            <input type="number" id="contactTwelfth" class="modal-input" placeholder="e.g. 85" min="0" max="100" step="0.01">
+            <div class="modal-optional-toggle" id="optionalToggle" onclick="toggleOptionalFields()">
+                ➕ Add more details (optional)
+            </div>
 
-            <label class="modal-label">PCM Percentage</label>
-            <input type="number" id="contactPCM" class="modal-input" placeholder="e.g. 88" min="0" max="100" step="0.01">
+            <div id="optionalFields" style="display:none;">
+                <label class="modal-label">PCM Percentage</label>
+                <input type="number" id="contactPCM" class="modal-input" placeholder="e.g. 88" min="0" max="100" step="0.01">
 
-            <label class="modal-label">KEAM Score</label>
-            <input type="number" id="contactKeam" class="modal-input" placeholder="e.g. 420" min="0">
+                <label class="modal-label">KEAM / JEE Score</label>
+                <input type="number" id="contactKeam" class="modal-input" placeholder="e.g. 420" min="0">
+
+                <label class="modal-label">Place / District</label>
+                <input type="text" id="contactPlace" class="modal-input" placeholder="e.g. Kochi, Ernakulam">
+            </div>
 
             <div class="modal-error" id="contactError"></div>
 
@@ -445,6 +461,7 @@
         var totalQuestions = 15;
         var contactName    = "";
         var contactPhone   = "";
+        var contactPlace   = "";
         var contactBoard   = "";
         var contactTwelfth = "";
         var contactPCM     = "";
@@ -477,9 +494,22 @@
             document.getElementById("contactModalOverlay").style.display = "flex";
         }
 
+        function toggleOptionalFields() {
+            var fields = document.getElementById("optionalFields");
+            var toggle = document.getElementById("optionalToggle");
+            if (fields.style.display === "none") {
+                fields.style.display = "block";
+                toggle.textContent = "➖ Hide optional details";
+            } else {
+                fields.style.display = "none";
+                toggle.textContent = "➕ Add more details (optional)";
+            }
+        }
+
         function submitContactInfo() {
             var name     = document.getElementById("contactName").value.trim();
             var phone    = document.getElementById("contactPhone").value.trim();
+            var place    = document.getElementById("contactPlace").value.trim();
             var board    = document.getElementById("contactBoard").value;
             var twelfth  = document.getElementById("contactTwelfth").value.trim();
             var pcm      = document.getElementById("contactPCM").value.trim();
@@ -495,30 +525,31 @@
                 errorEl.textContent = "Please enter a valid phone number.";
                 return;
             }
-            if (board === "") {
-                errorEl.textContent = "Please select your board.";
-                return;
-            }
             if (twelfth === "" || isNaN(twelfth) || twelfth < 0 || twelfth > 100) {
                 errorEl.textContent = "Please enter a valid 12th percentage (0-100).";
                 return;
             }
-            if (pcm === "" || isNaN(pcm) || pcm < 0 || pcm > 100) {
+            if (board === "") {
+                errorEl.textContent = "Please select your board.";
+                return;
+            }
+            if (pcm !== "" && (isNaN(pcm) || pcm < 0 || pcm > 100)) {
                 errorEl.textContent = "Please enter a valid PCM percentage (0-100).";
                 return;
             }
-            if (keam === "" || isNaN(keam) || keam < 0) {
-                errorEl.textContent = "Please enter a valid KEAM score.";
+            if (keam !== "" && (isNaN(keam) || keam < 0)) {
+                errorEl.textContent = "Please enter a valid KEAM/JEE score.";
                 return;
             }
 
             errorEl.textContent = "";
             contactName    = name;
             contactPhone   = phone;
+            contactPlace   = place === "" ? "Not provided" : place;
             contactBoard   = board;
             contactTwelfth = twelfth;
-            contactPCM     = pcm;
-            contactKeam    = keam;
+            contactPCM     = pcm === "" ? "Not provided" : pcm;
+            contactKeam    = keam === "" ? "Not provided" : keam;
             document.getElementById("contactModalOverlay").style.display = "none";
             showResults();
         }
@@ -575,6 +606,7 @@
             var payload = {
                 name: contactName,
                 phone: contactPhone,
+                place: contactPlace,
                 board: contactBoard,
                 twelfth_percentage: contactTwelfth,
                 pcm_percentage: contactPCM,
@@ -674,16 +706,20 @@
             answeredCount = 0;
             contactName = "";
             contactPhone = "";
+            contactPlace = "";
             contactBoard = "";
             contactTwelfth = "";
             contactPCM = "";
             contactKeam = "";
             document.getElementById("contactName").value = "";
             document.getElementById("contactPhone").value = "";
+            document.getElementById("contactPlace").value = "";
             document.getElementById("contactBoard").value = "";
             document.getElementById("contactTwelfth").value = "";
             document.getElementById("contactPCM").value = "";
             document.getElementById("contactKeam").value = "";
+            document.getElementById("optionalFields").style.display = "none";
+            document.getElementById("optionalToggle").textContent = "➕ Add more details (optional)";
             document.getElementById("contactModalOverlay").style.display = "none";
             updateProgressBar();
             var btns = document.querySelectorAll(".rating-btn");
